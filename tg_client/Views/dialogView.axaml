@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vs="using:tg_client.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="tg_client.Views.dialogView">
+
+    <Grid
+        RowDefinitions="Auto, *, Auto">
+        <Grid
+            Grid.Row="0"
+            Height="40"
+            Background="LightGray">            
+        </Grid>
+        <Grid
+            Grid.Row="1">
+            <ScrollViewer>
+                <ItemsControl
+                    ItemsSource="{Binding Messages}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <vs:messageView/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        <Grid
+            Grid.Row="2">
+            <Grid
+                ColumnDefinitions="*, 80">
+                <TextBox
+                    VerticalAlignment="Center"
+                    Grid.Column="0"
+                    Margin="2, 2, 0, 2"/>
+                <Button
+                    Grid.Column="1"           
+                    HorizontalAlignment="Stretch"                    
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Margin="4"
+                    Command="{Binding sendMessageCmd}">
+                    Send
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+    
+</UserControl>

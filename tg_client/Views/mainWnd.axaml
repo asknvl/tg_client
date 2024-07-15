@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:tg_client.ViewModels"
+        xmlns:vs="using:tg_client.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="tg_client.Views.mainWnd"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="tg_client"
+        x:DataType="vm:mainVM">
+
+    <Design.DataContext>
+        <vm:mainVM/>
+    </Design.DataContext>
+
+    <Grid
+        ColumnDefinitions="Auto, *">
+        <Grid
+            Grid.Column="0"
+            MinWidth="300">            
+            <vs:chatListView
+                DataContext="{Binding ChatsList}"/>
+        </Grid>
+        <Grid
+            Grid.Column="1">
+            <vs:dialogsContainerView
+                DataContext="{Binding Dialogs}"/>
+        </Grid>
+    </Grid>
+    
+</Window>

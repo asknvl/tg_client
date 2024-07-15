@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="100"
+             xmlns:conv="using:tg_client.Views.converters"
+             x:Class="tg_client.Views.messageView">
+
+    <UserControl.Resources>
+        <conv:DirectionToAlignmentConverter x:Key="directionToAlignmentConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Border
+            CornerRadius="10"
+            VerticalAlignment="Center"
+            Background="LightGray"
+            HorizontalAlignment="{Binding Direction, Converter={StaticResource directionToAlignmentConverter}}"
+            Margin="2"
+            MaxWidth="300">
+            <Grid
+                RowDefinitions="*, Auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="5"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Text}">                        
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    FontSize="10"
+                    Margin="4"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Time}">                    
+                </TextBlock>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

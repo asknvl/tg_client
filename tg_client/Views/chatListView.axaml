@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dt="using:tg_client.Models.database.postgre.dtos"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="tg_client.Views.chatListView">
+    <Grid
+        RowDefinitions="Auto, *">
+        <ComboBox
+            Grid.Row="0"
+            ItemsSource="{Binding Sources}"
+            SelectedItem="{Binding Source}"
+            HorizontalAlignment="Stretch"
+            Margin="2">
+            <ComboBox.ItemTemplate>
+                <DataTemplate
+                    DataType="dt:SourceAccount">
+                    <TextBlock
+                        Text="{Binding source_name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ListBox
+            Grid.Row="1"
+            Margin="2, 0, 2, 2"
+            ItemsSource="{Binding Chats}"
+            SelectedItem="{Binding Chat}">
+            <ListBox.ItemTemplate>
+                <DataTemplate
+                    DataType="dt:UserChat">
+                    <TextBlock
+                        Text="{Binding user.firstname}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
