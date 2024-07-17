@@ -47,6 +47,24 @@ namespace tg_client.ViewModels
             #region commands
             sendMessageCmd = ReactiveCommand.CreateFromTask(async () => {
 
+                try
+                {
+                    await api.SendMessage(new Models.rest.dtos.messageDto() {                    
+                        account_id = userChat.chat.account_id,
+                        user_telegram_id = userChat.user.telegram_id,
+                        media = null,
+                        text = Text                    
+                    });
+
+                    await update();
+
+                    Text = "";
+
+                } catch (Exception ex)
+                {
+
+                }
+
             });
             #endregion
         }

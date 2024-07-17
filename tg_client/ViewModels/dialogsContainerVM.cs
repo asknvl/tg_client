@@ -47,7 +47,7 @@ namespace tg_client.ViewModels
                 dialog = dialogs[chat_id];
             else
             {
-                dialog = new dialogVM(mongoProvider, userChat);
+                dialog = new dialogVM(mongoProvider, api, userChat);
                 dialogs.Add(chat_id, dialog);
             }
 
