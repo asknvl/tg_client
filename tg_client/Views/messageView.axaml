@@ -28,13 +28,35 @@
                     HorizontalAlignment="Right"
                     Text="{Binding Text}">                        
                 </TextBlock>
-                <TextBlock
+                <Grid
+                    ColumnDefinitions="Auto, 7, 7"
                     Grid.Row="1"
-                    FontSize="10"
-                    Margin="4"
-                    HorizontalAlignment="Right"
-                    Text="{Binding Time}">                    
-                </TextBlock>
+                    Margin="4">
+                    <TextBlock                        
+                        Grid.Column="0"
+                        FontSize="10"
+                        Margin="4"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Text="{Binding Time}">                    
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="1"
+                        FontSize="12"     
+                        Margin="0, -1, 0, 0"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding IsSent}">
+                        +
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="2"
+                        FontSize="12"       
+                        Margin="0, -1, 0, 0"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding IsRead}">
+                        +
+                    </TextBlock>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

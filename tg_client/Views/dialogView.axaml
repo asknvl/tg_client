@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vs="using:tg_client.Views"
+             xmlns:cust="using:tg_client.Views.custom"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="tg_client.Views.dialogView">
 
@@ -15,16 +16,24 @@
         </Grid>
         <Grid
             Grid.Row="1">
-            <ScrollViewer>
-                <ItemsControl
-                    ItemsSource="{Binding Messages}">
+            <!--<ItemsControl
+                    Items="{Binding Messages}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <vs:messageView/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                </ItemsControl>-->
+
+            <cust:AutoScrollListBox
+                Items="{Binding Messages}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <vs:messageView/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </cust:AutoScrollListBox>
+
         </Grid>
         <Grid
             Grid.Row="2">

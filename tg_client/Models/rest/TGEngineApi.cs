@@ -42,7 +42,7 @@ namespace tg_client.Models.rest
         public async Task SendMessage(messageDto message)
         {
             var json = JsonConvert.SerializeObject(message);
-            var addr = $"{url}/messages/send";
+            var addr = $"{url}/updates/sendMessage";
 
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 

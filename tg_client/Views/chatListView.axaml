@@ -7,9 +7,9 @@
              x:Class="tg_client.Views.chatListView">
     <Grid
         RowDefinitions="Auto, *">
-        <ComboBox
+        <ComboBox            
             Grid.Row="0"
-            ItemsSource="{Binding Sources}"
+            Items="{Binding Sources}"
             SelectedItem="{Binding Source}"
             HorizontalAlignment="Stretch"
             Margin="2">
@@ -21,16 +21,36 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <ListBox
+        <ListBox            
             Grid.Row="1"
             Margin="2, 0, 2, 2"
-            ItemsSource="{Binding Chats}"
-            SelectedItem="{Binding Chat}">
+            Items="{Binding Chats}"
+            SelectedItem="{Binding Chat, Mode=OneWayToSource}">
             <ListBox.ItemTemplate>
                 <DataTemplate
                     DataType="dt:UserChat">
-                    <TextBlock
-                        Text="{Binding user.firstname}"/>
+                    <!--<TextBlock
+                        Text="{Binding user.firstname}"/>-->
+                    <Grid
+                        ColumnDefinitions="*, 30"
+                        HorizontalAlignment="Stretch">
+                        <TextBlock                            
+                            Grid.Column="0">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="user.firstname"/>
+                                    <Binding Path="user.lastname"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="1"                                                       
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            TextAlignment="Right"
+                            Text="{Binding chat.unread_count}">
+                        </TextBlock>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

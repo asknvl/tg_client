@@ -77,7 +77,7 @@ namespace tg_engine.database.postgre
             using (var context = new PostgreDbContext(dbContextOptions))
             {
 
-                var foundChat = from chat in context.telegram_chats
+                var foundChat = (from chat in context.telegram_chats
                                 join user in context.telegram_users
                                 on chat.telegram_user_id equals user.id
                                 where chat.account_id == account_id
@@ -86,49 +86,18 @@ namespace tg_engine.database.postgre
                                 {
                                     telegram_chat = chat,
                                     telegram_user = user
-                                };
+                                }).Take(100);
 
                 foreach (var chat in foundChat)
                 {
                     res.Add(new UserChat { 
-
                         chat = chat.telegram_chat,
-                        user = chat.telegram_user
-
-                    });
-                }                
-
-
-                //if (foundChat == null)
-                //{
-                //    context.telegram_users.Add(new_user);
-                //    await context.SaveChangesAsync();
-                //    var telegram_user_id = new_user.id;
-
-
-                //    var new_chat = new telegram_chat()
-                //    {
-                //        account_id = account_id,
-                //        telegram_user_id = telegram_user_id,
-                //        chat_type = "private"
-                //    };
-
-                //    context.telegram_chats.Add(new_chat);
-                //    await context.SaveChangesAsync();
-
-                //    res.chat = new_chat;
-                //    res.user = new_user;
-
-                //}
-                //else
-                //{
-                //    res.chat = foundChat;
-                //    res.user = context.telegram_users.SingleOrDefault(u => u.id == foundChat.telegram_user_id);
-                //}
-
+                        user = chat.telegram_user,
+                    });                    
+                }                              
             }
 
-            return res;
+            return res.OrderByDescending(c => c.chat.updated_at).ToList();
         }
     }
 }

@@ -24,8 +24,8 @@ namespace tg_engine.database.mongo
             var connectionString = $"mongodb://{settings.user}:{settings.password}@{settings.host}";
             client = new MongoClient(connectionString);
             var database = client.GetDatabase(settings.db_name);
-            messages = database.GetCollection<MessageBase>("messages");        
-
+            //messages = database.GetCollection<MessageBase>("messages_test");
+            messages = database.GetCollection<MessageBase>("messages");
             //var connectionString = $"mongodb://{username}:{password}@{host}:{port}/{databaseName}?authSource={databaseName}&authMechanism=SCRAM-SHA-256";
 
         }
@@ -49,7 +49,10 @@ namespace tg_engine.database.mongo
             var filter = Builders<MessageBase>.Filter.And(chatId, messageId);
             //var filter = Builders<MessageBase>.Filter.Eq("chat_id", chat_id);
             var result = await messages.FindAsync(filter);
-            return await result.ToListAsync();
+            var list = await result.ToListAsync();
+
+
+            return list;/*.OrderByDescending(m => m.telegram_message_id).ToList();*/
         }
 
         public async Task<bool> CheckMessageExists(int telegram_message_id)

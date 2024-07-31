@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -82,7 +83,7 @@ namespace tg_client.ViewModels
             for (var i = messages.Count-1; i >= 0; i--)
             {
                 var message = messages[i];
-                var msg = new messageVM(message.telegram_message_id, message.direction, message.text, message.date);
+                var msg = new messageVM(message.telegram_message_id, message.direction, message.text, message.date, message.is_read);
 
                 Messages.Add(msg);
             }

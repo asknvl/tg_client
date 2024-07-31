@@ -19,6 +19,20 @@ namespace tg_client.ViewModels
             set => this.RaiseAndSetIfChanged(ref direction, value); 
         }
 
+        bool isRead;
+        public bool IsRead
+        {
+            get => isRead;
+            set => this.RaiseAndSetIfChanged(ref isRead, value);
+        }
+
+        bool isSent;
+        public bool IsSent
+        {
+            get => isSent;
+            set => this.RaiseAndSetIfChanged(ref isSent, value);    
+        }        
+
         string text;
         public string Text
         {
@@ -34,12 +48,15 @@ namespace tg_client.ViewModels
         }
         #endregion
 
-        public messageVM(long? message_id, string direction, string text, DateTime time)
+        public messageVM(long? message_id, string direction, string text, DateTime time, bool isread)
         {
             this.message_id = message_id;            
             Direction = direction;            
             Text = text;            
             Time = time;
+            IsRead = isread;
+            IsSent = true;
+            
         }
     }
 }

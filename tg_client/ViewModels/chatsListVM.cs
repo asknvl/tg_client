@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using tg_client.Models.database.postgre.dtos;
 using tg_engine.database.postgre;
 using tg_engine.database.postgre.models;
+using tg_engine.tg_hub.events;
 
 namespace tg_client.ViewModels
 {
@@ -43,7 +44,8 @@ namespace tg_client.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref chat, value);
-                ChatSelectedEvent?.Invoke(chat);
+                if (value != null)
+                    ChatSelectedEvent?.Invoke(chat);
             }
         }
 
@@ -78,6 +80,55 @@ namespace tg_client.ViewModels
                 Source = Sources[0];
 
             //var res = await postgreProvider.GetUserChats();
+        }
+
+        public async Task OnNewChat(newChatEvent echt)
+        {
+
+            if (Source.account_id != echt.account_id)
+                return;
+
+            var found = Chats.SingleOrDefault(c => c.chat.id == echt.chat_id);
+            if (found == null)
+            {
+                Chat = null;
+
+                Chats.Insert(0, new UserChat()
+                {
+                    chat = new telegram_chat()
+                    {
+                        id = echt.chat_id,
+                        account_id = echt.account_id,
+                        unread_count = 1
+                    },
+                    user = new telegram_user()
+                    {
+                        telegram_id = echt.telegram_id,
+                        firstname = echt.data.firstname,
+                        lastname = echt.data.lastname,
+                        username = echt.data.username
+                    }
+                });
+            }
+        }
+
+        public async Task OnNewMessage(newMessageEvent emsg)
+        {
+            var found = Chats.SingleOrDefault(c => c.chat.id == emsg.chat_id);
+            if (found != null)
+            {
+                var tmpChat = Chat;
+                Chat = null;
+
+                found.chat.unread_count = found.chat.unread_count++ ?? 1;
+                Chats.Remove(found);                   
+                Chats.Insert(0, found);
+
+                //Chat = tmpChat;
+
+
+
+            }
         }
         #endregion
 

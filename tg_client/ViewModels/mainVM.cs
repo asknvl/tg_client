@@ -1,12 +1,14 @@
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using tg_client.Models.rest;
 using tg_engine.config;
 using tg_engine.database.mongo;
 using tg_engine.database.postgre;
+using SocketIOClient;
+using Newtonsoft.Json;
+using tg_engine.tg_hub.events;
+using System;
+using System.Collections.Generic;
 
 namespace tg_client.ViewModels
 {    
@@ -16,6 +18,7 @@ namespace tg_client.ViewModels
         IPostgreProvider postgreProvider;
         IMongoProvider mongoProvider;
         ITGEngineApi api;
+        SocketIOClient.SocketIO socket;
         #endregion
 
         #region properties
@@ -41,18 +44,43 @@ namespace tg_client.ViewModels
             mongoProvider = new MongoProvider(vars.tg_engine_variables.messaging_settings_db);
             api = new TGEngineApi("http://localhost:8080");
 
-
             Dialogs = new dialogsContainerVM(mongoProvider, api);
 
             ChatsList = new chatsListVM(postgreProvider);
-            ChatsList.ChatSelectedEvent += (userchat) => {
-                Dialogs.ShowDialog(userchat);
+            ChatsList.ChatSelectedEvent += async (userchat) => {
+                await Dialogs.ShowDialog(userchat);
             };
 
-            Task.Run(async () => {
+            socket = new SocketIOClient.SocketIO("http://192.168.119.53:3000");
+            socket.On("new-chat", async response => {
+               try
+                {
+                    var eChts = JsonConvert.DeserializeObject<List<newChatEvent>>(response.ToString());
+                    foreach (var e in eChts)
+                        await ChatsList.OnNewChat(e);
+                } catch (Exception ex)
+                {
 
+                }
+            });
+            socket.On("new-message", async response => {
+                try
+                {
+                    var eMsgs = JsonConvert.DeserializeObject<List<newMessageEvent>>(response.ToString());
+                    foreach (var e in eMsgs)
+                        await ChatsList.OnNewMessage(e);
+                   
+                } catch (Exception ex)
+                {
+
+                }                
+            });
+
+
+            Task.Run(async () =>
+            {                
                 await ChatsList.OnLoad();
-
+                await socket.ConnectAsync();
             });
 
         }
@@ -62,7 +90,7 @@ namespace tg_client.ViewModels
 
         public override async Task OnLoad()
         {
-            await ChatsList.OnLoad();
+          
         }
     }
 }
